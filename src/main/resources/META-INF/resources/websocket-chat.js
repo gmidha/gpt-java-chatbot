@@ -41,7 +41,14 @@ function sendMessage() {
 function appendMessage(message, sender) {
     const messageElement = document.createElement("div");
     messageElement.classList.add("message", sender);
-    messageElement.textContent = message;
+
+    // Render Markdown for bot responses
+    if (sender === "bot") {
+        messageElement.innerHTML = marked.parse(message);
+    } else {
+        messageElement.textContent = message;
+    }
+
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
