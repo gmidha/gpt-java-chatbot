@@ -1,0 +1,30 @@
+package org.acme.chat;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import io.quarkus.websockets.next.OnOpen;
+import io.quarkus.websockets.next.OnTextMessage;
+import io.quarkus.websockets.next.WebSocket;
+
+
+@WebSocket(path = "/chat/{username}")
+@ApplicationScoped
+public class ChatSocket {
+
+    private final SessionScopedChatBot bot;
+
+    public ChatSocket(SessionScopedChatBot bot) {
+        this.bot = bot;
+    }
+
+    @OnOpen
+    public String onOpen() {
+        return bot.chat("Hello, how can I help you?");
+    }
+
+    @OnTextMessage
+    public String onMessage(String message) {
+        return bot.chat(message);
+    }
+
+
+}
