@@ -42,6 +42,7 @@ public class ElasticIngestor {
                     Embedding content = embeddingModel.embed(textSegment).content();
                     elasticEmbeddingStore.add(content, textSegment);
                 });
+        Log.infof("Ingested %d documents.%n", documents.size());
     }
 
 }

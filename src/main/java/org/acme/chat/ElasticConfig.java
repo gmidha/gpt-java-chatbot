@@ -12,7 +12,6 @@ import org.elasticsearch.client.RestClient;
 
 public class ElasticConfig {
 
-
     @Inject
     RestClient restClient;
 
