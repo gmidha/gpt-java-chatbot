@@ -12,9 +12,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.15.1</quarkus.platform.version>
+        <quarkus.platform.version>3.18.4</quarkus.platform.version>
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.3.1</surefire-plugin.version>
+        <surefire-plugin.version>3.5.2</surefire-plugin.version>
         <langchain4j-embeddings.version>1.0.0-beta1</langchain4j-embeddings.version>
         <langchain4j.version>1.0.0-beta1</langchain4j.version>
     </properties>
@@ -67,7 +67,23 @@
             <version>${langchain4j.version}</version>
         </dependency>
 
+        <!-- Minio -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.17</version>
+            <type>jar</type>
+        </dependency>
+
         <!-- tests -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-openshift</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-container-image-openshift</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>

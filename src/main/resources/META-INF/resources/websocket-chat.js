@@ -1,5 +1,9 @@
 // const username = prompt("Enter your username:");
-const ws = new WebSocket(`ws://localhost:8080/chat/user`);
+const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+const wsHost = window.location.hostname || 'localhost';
+const wsPort = window.location.port ? `:${window.location.port}` : '';
+const ws = new WebSocket(`${wsProtocol}://${wsHost}${wsPort}/chat/user`);
+
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
