@@ -23,9 +23,6 @@ import static dev.langchain4j.data.document.splitter.DocumentSplitters.recursive
 @ApplicationScoped
 public class DocumentsIngestor {
 
-    @ConfigProperty(name = "documents.dir")
-    String documentsDir;
-
     @ConfigProperty(name = "minio.bucket-name")
     String bucketName;
 
