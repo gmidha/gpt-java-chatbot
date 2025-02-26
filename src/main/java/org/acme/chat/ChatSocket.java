@@ -1,9 +1,9 @@
 package org.acme.chat;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import io.quarkus.websockets.next.OnOpen;
 import io.quarkus.websockets.next.OnTextMessage;
 import io.quarkus.websockets.next.WebSocket;
+import jakarta.enterprise.context.ApplicationScoped;
 
 
 @WebSocket(path = "/chat/{username}")

@@ -15,7 +15,7 @@ public class ElasticEmbeddingStoreProducer {
 
     @Produces
     @ApplicationScoped
-    public EmbeddingStore<TextSegment> produceEmbeddingStore(){
+    public EmbeddingStore<TextSegment> produceEmbeddingStore() {
 
         return ElasticsearchEmbeddingStore.builder()
                 .restClient(restClient)
