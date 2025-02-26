@@ -23,4 +23,38 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_BUCKETS: jakarata12-bucket  # init with bucket
+    volumes:
+      - ./data:/data
+      - ./config:/root/.minio
+    command: server /data --console-address ":9001"
 
+  initializer:
+    image: alpine:latest
+    entrypoint: sh
+    command: # copy file in documents
+      - -c
+      - |
+        apk add --no-cache curl jq;     # Install necessary tools
+        until curl -s http://minio:9000/minio/health/ready >/dev/null; do
+          echo "Waiting for MinIO to start...";
+          sleep 2;
+        done;
+        echo "MinIO is ready. Installing MinIO client (mc)...";
+        wget https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/bin/mc && chmod +x /usr/bin/mc;
+        echo "Uploading file...";
+        mc alias set myminio http://minio:9000 minioadmin minioadmin;
+        mc mb myminio/jakarata12-bucket || true; # Ensure the bucket exists
+        mc cp --recursive /documents/ myminio/jakarata12-bucket/; # Explicitly specify the file path
+    depends_on:
+      - minio
+    volumes:
+      - ../documents:/documents         # Mount the 'documents' directory into the container
