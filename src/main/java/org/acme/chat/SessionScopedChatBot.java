@@ -2,9 +2,10 @@ package org.acme.chat;
 
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.SessionScoped;
 
-@RegisterAiService
-
+@RegisterAiService(retrievalAugmentor = ElasticAugmentor.class)
+@SessionScoped
 public interface SessionScopedChatBot {
 
     @SystemMessage("You are chatbot that helps users with their queries")
