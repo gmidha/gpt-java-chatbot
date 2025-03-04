@@ -18,7 +18,7 @@ public class ChatSocket {
 
     @OnOpen
     public String onOpen() {
-        return bot.chat("Hello, how can I help you?");
+        return "Hello, how can I help you?";
     }
 
     @OnTextMessage
