@@ -44,8 +44,8 @@ public class DocumentsIngestor {
         Log.infof("Embedding Store: " + elasticEmbeddingStore.getClass().getSimpleName());
         Log.infof("Embedding Model: " + embeddingModel.getClass().getSimpleName());
 
-        List<Document> documents = FileSystemDocumentLoader.loadDocuments(new File("/Users/sshaaf/git/rag-documents").toPath(), new ApacheTikaDocumentParser());
-        //List<Document> documents = new MinioDocumentLoader(minioClient).loadDocuments(bucketName, new ApacheTikaDocumentParser());
+        //List<Document> documents = FileSystemDocumentLoader.loadDocuments(new File("/Users/sshaaf/git/rag-documents").toPath(), new ApacheTikaDocumentParser());
+        List<Document> documents = new MinioDocumentLoader(minioClient).loadDocuments(bucketName, new ApacheTikaDocumentParser());
         Log.infof("Total documents loaded by Apache Tika: " + documents.size());
 
         var ingestor = EmbeddingStoreIngestor.builder()
