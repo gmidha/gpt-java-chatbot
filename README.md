@@ -45,12 +45,11 @@ curl -fsSL https://elastic.co/start-local | sh
 cd elastic-start-local
 sh start.sh
 ```
-
-If you choose to use `start-local` I suggest you will need to comment the elastic service in the docker-compose file provided in `deploy/`. 
-After that run the docker-compose file
+ 
+After that run the docker-compose file to get the minio service started as well.
 
 ```bash
-docker-compose -f deploy/docker-compose-elastic.yml up
+docker-compose -f deploy/docker-compose.yml up
 ```
 
 This will bring up the local minio environment as well. 

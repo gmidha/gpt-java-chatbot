@@ -38,7 +38,7 @@ public class MinioDocumentLoader {
 
     }
 
-    public List<Document> loadDocuments(String bucketName, DocumentParser parser) throws Exception {
+    public List<Document> loadDocuments(String bucketName, DocumentParser parser) {
         return StreamSupport.stream(minioClient.listObjects(
                         ListObjectsArgs.builder()
                                 .bucket(bucketName)
