@@ -145,6 +145,10 @@ jobs:
         openshift_token: ${{ env.OPENSHIFT_TOKEN }}
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+    
+    - name: Apply yaml files
+      run: |
+        oc whoami
 
     
 
