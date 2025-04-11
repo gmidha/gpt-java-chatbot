@@ -4,4 +4,3 @@ metadata:
   name: ds-project
   labels:
     opendatahub.io/dashboard: "true"
-    modelmesh-enabled: "true"
