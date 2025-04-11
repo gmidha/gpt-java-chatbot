@@ -148,6 +148,8 @@ jobs:
     
     - name: Apply yaml files
       run: |
+        echo ${GITHUB_WORKSPACE}
+        echo "${{ env.PWD }}"
         oc apply -f ./deploy/openshift/s3.yaml
 
     
