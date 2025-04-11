@@ -148,7 +148,7 @@ jobs:
     
     - name: Apply yaml files
       run: |
-        oc whoami
+        oc apply -f ./deploy/openshift/s3.yaml
 
     
 
