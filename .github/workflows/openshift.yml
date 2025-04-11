@@ -149,7 +149,7 @@ jobs:
     - name: Apply yaml files
       run: |
         ls -la ${GITHUB_WORKSPACE}
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
 
     
 
