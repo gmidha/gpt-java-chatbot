@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   # wave 0
-  - namespace.yaml
+  - ns.yaml
   # wave 1
   # wave 2
   - openshift-gitops-og.yaml
