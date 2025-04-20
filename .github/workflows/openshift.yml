@@ -157,6 +157,11 @@ jobs:
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/openshift-gitops-subs.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/servicemesh/subs.yaml
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/ns.yaml
+        sleep 20
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/og.yaml
+        sleep 20
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/subs.yaml
         oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/
 
 
