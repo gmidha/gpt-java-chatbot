@@ -151,7 +151,7 @@ jobs:
         ls -la ${GITHUB_WORKSPACE}
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
-        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/operators/
+        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/
 
     
 
