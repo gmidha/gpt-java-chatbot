@@ -7,6 +7,4 @@ spec:
   channel: stable
   installPlanApproval: Automatic
   name: nfd
-  source: redhat-operators 
-  sourceNamespace: openshift-marketplace
-  startingCSV: nfd.v4.10.0
+  source: redhat-operators
