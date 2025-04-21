@@ -168,6 +168,8 @@ jobs:
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/og.yaml
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/subs.yaml
+        sleep 20
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/nfd-instance.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/ns.yaml
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/og.yaml
