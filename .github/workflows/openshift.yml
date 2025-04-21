@@ -168,6 +168,9 @@ jobs:
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/og.yaml
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/subs.yaml
+        sleep 60
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/cluster-policy.yaml
+
 
 
     
