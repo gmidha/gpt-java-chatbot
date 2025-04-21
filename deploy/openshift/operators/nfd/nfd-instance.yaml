@@ -14,7 +14,7 @@ spec:
       #      matchOn:
       #      - nodename: ["special-.*-node-.*"]
   operand:
-    image: 'registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9:v4.10'
+    image: 'registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9:v4.16'
     imagePullPolicy: IfNotPresent
     servicePort: 12000
   workerConfig:
