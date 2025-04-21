@@ -163,6 +163,11 @@ jobs:
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/subs.yaml
         oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/ns.yaml
+        sleep 20
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/og.yaml
+        sleep 20
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/subs.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/ns.yaml
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/og.yaml
