@@ -99,19 +99,22 @@ The final deployed application should look something like below.
 ### To deploy
 Ensure the Elastic Operator is installed in OpenShift. the CR yaml files are in `deploy/openshift`
 
+Once Elastic and Kibana are installed. We need configure the certificate as well.
+
 To deploy minio use the following yaml [file](https://github.com/sshaaf/basic-kserve-vllm/blob/main/setup/setup-s3.yaml)  
 
 
-Once minio is deployed the secret should be available in OpenShift secrets. you will need to create the following secret before deploying the quarkus application. 
-```bash
-kubectl create secret generic app-credentials \
-       --from-literal=MINIO_ACCESS_KEY=superkey \
-       --from-literal=MINIO_SECRET_KEY=superSecret \
-       --from-literal=OPENAI_API_KEY=superSecret
-       --from-literal=ELASTIC_PASSWORD=superSecret
-```
 
-Finally run the following quarkus goal to deploy the application
+
+Once minio is deployed the secret should be available in OpenShift secrets. you will need to create the following secret before deploying the quarkus application. 
+
+Under deploy/OpenShift there are additonal application deployment files that need to be executed in the following order
+- app-configmap.yaml
+- app-secret.yaml
+- deployment.yaml
+
+
+The application can also be deployed using the Quarkus OpenShift extension as follows
 
 ```bash
 mvn clean compile package -Dquarkus.kubernetes.deploy=true -DskipTests

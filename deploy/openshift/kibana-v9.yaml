@@ -1,0 +1,24 @@
+kind: Kibana
+apiVersion: kibana.k8s.elastic.co/v1
+metadata:
+  name: kibana-sample
+  namespace: elastic-vector
+spec:
+  version: 9.0.0
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch-sample
+  podTemplate:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      containers:
+        - name: kibana
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 0.5
+            limits:
+              memory: 2Gi
+              cpu: 2
