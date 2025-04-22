@@ -66,7 +66,7 @@ public class DocumentsIngestor {
         var ingestor = EmbeddingStoreIngestor.builder()
                 .embeddingStore(elasticEmbeddingStore)
                 .embeddingModel(embeddingModel)
-                .documentSplitter(recursive(5000, 0))
+                .documentSplitter(recursive(300, 50))
                 .build();
 
             IngestionResult result = ingestor.ingest(documents);
