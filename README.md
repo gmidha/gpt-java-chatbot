@@ -97,24 +97,91 @@ Maintains the same role as in development, providing object storage for files in
 The final deployed application should look something like below.
 
 ### To deploy
+create a namespace/project called `elastic-vector`
+
 Ensure the Elastic Operator is installed in OpenShift. the CR yaml files are in `deploy/openshift`
 
-Once Elastic and Kibana are installed. We need configure the certificate as well.
+I have used the default Elastic and Kibana CRs. 
+An example for each of them is in the deploy/openshift directory
+- elastic-v9.yaml
+- kibana-v9.yaml
 
-To deploy minio use the following yaml [file](https://github.com/sshaaf/basic-kserve-vllm/blob/main/setup/setup-s3.yaml)  
+Get the secret for logging into kibana and for application use later in this section
+
+```bash
+oc get secret elasticsearch-sample-es-elastic-user -o jsonpath='{.data}' -n elastic-vector | jq
+```
+
+Next step is to instll minio
+
+To deploy minio use the following yaml [minio.yaml](deploy/openshift/minio.yaml)  
+
+Now lets get the access details
+```bash
+oc get secret minio-root-user -o jsonpath='{.data}' -n elastic-vector | jq
+
+# Get the console url:
+oc get route minio-console
+```
+Create a new bucket `elastic-bucket` and upload the file you would like to use for RAG. 
 
 
+We also need to add these values to the app-secret which will be mounted by the running application container. 
+
+```
+kubectl create secret generic app-credentials --from-literal=quarkus.elasticsearch.password=ELASTIC_PASSWORD \
+       --from-literal=minio.access-key=<MINIO_ROOT_PASSWORD> \
+       --from-literal=minio.secret-key= <MINIO_ROOT_USER>\
+       --from-literal=quarkus.langchain4j.openai.api-key=YOUR OpenAI key
+```
+
+So far so good. Lets setup the final piece before setting up the deployment.yaml i.e. ConfigMap
+We need the config map to specify the application settings. 
+
+The default configmap should work with OpenAI, if the key was provided in the `app-credentials` 
+
+```yaml
+  # assuming namespace for elastic is 'elastic-vector'
+  quarkus.elasticsearch.hosts: 'elasticsearch-sample-es-internal-http.elastic-vector.svc.cluster.local:9200'
+  quarkus.elasticsearch.ssl: 'true'
+  quarkus.elasticsearch.username: elastic
+  quarkus.langchain4j.timeout: 60s
+  quarkus.elasticsearch.protocol: https
+  quarkus.kubernetes-client.trust-certs: 'true'
+  quarkus.kubernetes-config.secrets: app-credentials
+  minio.endpoint: 'http://minio.elastic-vector.svc.cluster.local:9000'
+  quarkus.http.port: '8080'
+  quarkus.openshift.env.secrets: app-credentials
+  quarkus.kubernetes-config.secrets.enabled: 'true'
+  minio.bucket-name: elastic-bucket
+  quarkus.websockets-next.server.auto-ping-interval: 1m
+  quarkus.openshift.route.tls.termination: edge
+```
+
+Incase you are running this on OpenShift AI cluster and have your own Model hosted. Add the following properties to the [app-configmap.yaml](deploy/openshift/app-configmap.yaml) file.
+
+```yaml
+  quarkus.langchain4j.openai.chat-model.model-name: MODEL_NAME
+  quarkus.langchain4j.openai.base-url: >-
+    http://MODEL_SERVICE_ENDPOINT/v1
+```
 
 
-Once minio is deployed the secret should be available in OpenShift secrets. you will need to create the following secret before deploying the quarkus application. 
-
-Under deploy/OpenShift there are additonal application deployment files that need to be executed in the following order
+Under deploy/OpenShift there are additional application deployment files that need to be executed in the following order
 - app-configmap.yaml
 - app-secret.yaml
 - deployment.yaml
 
+```bash
+oc apply -f deploy/openshift/app-configmap.yaml
+oc apply -f deploy/openshift/deployment.yaml
+```
 
-The application can also be deployed using the Quarkus OpenShift extension as follows
+Yay! Application should now be deployed and accessible via route. :) 
+
+    > Note: Incase adding more documents for rag into the elastic-bucket, delete the pod, and it will ingest the new documents. 
+
+If deploying via the source using the Quarkus OpenShift extension as follows
 
 ```bash
 mvn clean compile package -Dquarkus.kubernetes.deploy=true -DskipTests
