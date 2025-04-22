@@ -12,9 +12,9 @@ resources:
   # wave 0
   - ns.yaml
   # wave 1
-  - serving-runtime-vllm-granite-modelcar.yaml
+  - servingruntime.yaml
   # wave 2
-  - inference-service-granite-modelcar.yaml
+  - inference.yaml
   #- pvc-hftgi.yaml
   #- deployment-hftgi.yaml
   #- service-hftgi.yaml
