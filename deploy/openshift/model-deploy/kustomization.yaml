@@ -10,7 +10,7 @@ resources:
   #- presync-rhoai-ready.yaml
   #- presync-inferenceservice.yaml
   # wave 0
-  - namespace.yaml
+  - ns.yaml
   # wave 1
   - serving-runtime-vllm-granite-modelcar.yaml
   # wave 2
