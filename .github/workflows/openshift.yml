@@ -32,6 +32,8 @@ env:
   # To get a permanent token, refer to https://github.com/redhat-actions/oc-login/wiki/Using-a-Service-Account-for-GitHub-Actions
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  MINIO_USER: ${{ secrets.MINIO_ROOT_USER }}
+  MINIO_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
   #ARO_SERVER: ${{ secrets.ARO_SERVER }}
   #ARO_TOKEN: ${{ secrets.ARO_TOKEN }}
   #GCP_SERVER: ${{ secrets.GCP_SERVER }}
@@ -144,7 +146,7 @@ jobs:
         openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
         openshift_token: ${{ env.OPENSHIFT_TOKEN }}
         insecure_skip_tls_verify: true
-        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+        namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
     
     - name: Apply yaml files
       run: |
@@ -190,7 +192,7 @@ jobs:
         sleep 300
         ELASTIC_PWD=`oc get secret elasticsearch-sample-es-elastic-user -o jsonpath='{.data}' -n elastic-vector | jq -r .elastic`
         oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/model-deploy/
-        oc create secret generic app-credentials --from-literal=quarkus.elasticsearch.password=${ELASTIC_PASSWORD} --from-literal=minio.access-key=`${{ secrets.MINIO_ROOT_PASSWORD }}` --from-literal=minio.secret-key=`${{ secrets.MINIO_ROOT_USER }}` --from-literal=quarkus.langchain4j.openai.api-key=YOURKey
+        oc create secret generic app-credentials --from-literal=quarkus.elasticsearch.password=${ELASTIC_PASSWORD} --from-literal=minio.access-key=`${{ env.MINIO_USER }}` --from-literal=minio.secret-key=`${{ env.MINIO_PASSWORD }}` --from-literal=quarkus.langchain4j.openai.api-key=YOURKey
 
 
 
