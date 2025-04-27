@@ -4,3 +4,8 @@ metadata:
   name: ds-project
   labels:
     opendatahub.io/dashboard: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: elastic-vector
