@@ -1,0 +1,23 @@
+# configmap-quarkus-prod.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # Choose a meaningful name, e.g., matching your application
+  name: my-quarkus-app-prod-config
+data:
+  # assuming namespace for elastic is 'elastic-vector'
+  quarkus.elasticsearch.hosts: 'elasticsearch-sample-es-internal-http.elastic-vector.svc.cluster.local:9200'
+  quarkus.elasticsearch.ssl: 'true'
+  quarkus.elasticsearch.username: elastic
+  quarkus.langchain4j.timeout: 60s
+  quarkus.elasticsearch.protocol: https
+  quarkus.kubernetes-client.trust-certs: 'true'
+  quarkus.kubernetes-config.secrets: app-credentials
+  minio.endpoint: 'http://minio.elastic-vector.svc.cluster.local:9000'
+  quarkus.http.port: '8080'
+  quarkus.openshift.env.secrets: app-credentials
+  quarkus.kubernetes-config.secrets.enabled: 'true'
+  minio.bucket-name: elastic-bucket
+  quarkus.websockets-next.server.auto-ping-interval: 1m
+  quarkus.openshift.route.tls.termination: edge
+binaryData: {}

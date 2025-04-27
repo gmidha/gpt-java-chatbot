@@ -1,0 +1,131 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    app.openshift.io/vcs-uri: git@github.com:sshaaf/gpt-java-chatbot.git
+    app.quarkus.io/quarkus-version: 3.18.4
+    app.quarkus.io/commit-id: 74087b74d8160c7b44db4539483985601a944aba
+    app.quarkus.io/vcs-uri: https://github.com/sshaaf/gpt-java-chatbot.git
+    app.quarkus.io/build-timestamp: 2025-04-22 - 01:26:19 +0000
+  labels:
+    app.kubernetes.io/name: gpt-java-chatbot
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/managed-by: quarkus
+    app.openshift.io/runtime: quarkus
+  name: gpt-java-chatbot
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: gpt-java-chatbot
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: view-secrets
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: gpt-java-chatbot
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: gpt-java-chatbot-view-secrets
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: view-secrets
+subjects:
+  - kind: ServiceAccount
+    apiGroup: ""
+    name: gpt-java-chatbot
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: gpt-java-chatbot
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: gpt-java-chatbot-view
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: gpt-java-chatbot
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gpt-java-chatbot-service
+spec:
+  selector:
+    app: gpt-java-chatbot
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: gpt-java-chatbot-route
+spec:
+  to:
+    kind: Service
+    name: gpt-java-chatbot-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: gpt-java-chatbot
+  labels:
+    app: gpt-java-chatbot
+spec:
+  replicas: 1
+  selector:
+    app: gpt-java-chatbot
+  strategy:
+    type: Rolling # Use default rolling update parameters
+  template:
+    metadata:
+      labels:
+        app: gpt-java-chatbot
+    spec:
+      containers:
+        - name: gpt-java-chatbot-app
+          image: quay.io/sshaaf/gpt-java-chatbot:latest
+          envFrom:
+            - configMapRef:
+                name: my-quarkus-app-prod-config
+            - secretRef:
+                name: app-credentials
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /deployments/config
+              name: es-cert-volume
+              readOnly: true
+      serviceAccountName: gpt-java-chatbot
+      volumes:
+        - name: es-cert-volume
+          secret:
+            defaultMode: 384
+            optional: false
+            secretName: elasticsearch-sample-es-http-certs-public
+  triggers:
+    - type: ConfigChange # Redeploy when DC changes
