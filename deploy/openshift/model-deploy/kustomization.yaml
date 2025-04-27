@@ -11,6 +11,7 @@ resources:
   #- presync-inferenceservice.yaml
   # wave 0
   - ns.yaml
+  - accelerator-profile.yaml
   # wave 1
   - servingruntime.yaml
   # wave 2
