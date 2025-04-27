@@ -151,8 +151,8 @@ jobs:
     
     - name: Apply yaml files
       env:
-        minio_user: ${{ secrets.MINIO_USER }}
-        minio_password: ${{ secrets.MINIO_PASSWORD }} 
+        minio_user: ${{ secrets.MINIO_ROOT_USER }}
+        minio_password: ${{ secrets.MINIO_ROOT_PASSWORD }} 
       run: |
         echo $minio_user
         echo ${minio_user}
