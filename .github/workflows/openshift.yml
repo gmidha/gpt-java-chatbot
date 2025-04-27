@@ -184,7 +184,7 @@ jobs:
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/elastic-v9.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/kibana-v9.yaml
         sleep 30
-        ELASTIC_PWD=${ oc get secret elasticsearch-sample-es-elastic-user -o jsonpath='{.data}' -n elastic-vector | jq -r .elastic }
+        ELASTIC_PWD=${{ oc get secret elasticsearch-sample-es-elastic-user -o jsonpath='{.data}' -n elastic-vector | jq -r .elastic }}
         echo ${ELASTIC_PWD}
 
 
