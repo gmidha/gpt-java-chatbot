@@ -148,7 +148,6 @@ jobs:
     
     - name: Apply yaml files
       run: |
-        ls -la ${GITHUB_WORKSPACE}
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/ns.yaml
@@ -170,7 +169,7 @@ jobs:
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/subs.yaml
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/nfd-instance.yaml
-        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/dsc.yaml
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/dsc.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/ns.yaml
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/og.yaml
