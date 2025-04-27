@@ -152,8 +152,6 @@ jobs:
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/elastic/subs.yaml
         sleep 30
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/elastic-v9.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/kibana-v9.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/ns.yaml
         sleep 20
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/openshift-gitops-og.yaml
@@ -183,6 +181,8 @@ jobs:
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/cluster-policy.yaml
         sleep 60
         oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/model-deploy/
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/elastic-v9.yaml
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/kibana-v9.yaml
 
 
 
