@@ -180,12 +180,17 @@ jobs:
         sleep 60
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/cluster-policy.yaml
         sleep 60
-        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/model-deploy/
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/accelerator-profile.yaml
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/rbac-job-enable-modelcar.yaml
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/odhdashboardconfig.yaml
+        sleep 20
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/job-enable-modelcar.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/elastic-v9.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/kibana-v9.yaml
         sleep 30
         ELASTIC_PWD=`oc get secret elasticsearch-sample-es-elastic-user -o jsonpath='{.data}' -n elastic-vector | jq -r .elastic`
         echo ${ELASTIC_PWD}
+        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/model-deploy/
 
 
 
