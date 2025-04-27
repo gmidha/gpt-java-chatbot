@@ -5,8 +5,9 @@ metadata:
   name: elasticsearch-operator
   namespace: openshift-operators-redhat
 spec:
-  channel: stable
+  channel: stable-5.8
   installPlanApproval: Automatic
   name: elasticsearch-operator
   source: redhat-operators 
   sourceNamespace: openshift-marketplace
+  startingCSV: elasticsearch-operator.v5.8.19
