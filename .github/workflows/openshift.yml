@@ -150,6 +150,8 @@ jobs:
       run: |
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/elastic/subs.yaml
+        sleep 30
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/elastic-v9.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/kibana-v9.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/ns.yaml
