@@ -9,4 +9,4 @@ resources:
   # wave 2
   - og.yaml
   - subs.yaml
-  - dsc.yaml
+  #- dsc.yaml
