@@ -147,11 +147,13 @@ jobs:
         openshift_token: ${{ env.OPENSHIFT_TOKEN }}
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
+        minio_user: ${{ env.MINIO_USER }}
+        minio_password: ${{ env.MINIO_PASSWORD }} 
     
     - name: Apply yaml files
       run: |
-        echo $MINIO_USER
-        echo ${MINIO_USER}
+        echo $minio_user
+        echo ${minio_user}
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/elastic/subs.yaml
