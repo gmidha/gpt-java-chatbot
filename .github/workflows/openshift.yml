@@ -147,10 +147,12 @@ jobs:
         openshift_token: ${{ env.OPENSHIFT_TOKEN }}
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
-        minio_user: ${{ env.MINIO_USER }}
-        minio_password: ${{ env.MINIO_PASSWORD }} 
+        
     
     - name: Apply yaml files
+      env:
+        minio_user: ${{ secrets.MINIO_USER }}
+        minio_password: ${{ secrets.MINIO_PASSWORD }} 
       run: |
         echo $minio_user
         echo ${minio_user}
