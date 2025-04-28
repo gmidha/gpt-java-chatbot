@@ -14,14 +14,14 @@ data:
   quarkus.elasticsearch.protocol: https
   quarkus.kubernetes-client.trust-certs: 'true'
   quarkus.kubernetes-config.secrets: app-credentials
-  minio.endpoint: 'http://minio.default.svc.cluster.local:9000'
+  minio.endpoint: 'http://minio.elastic-vector.svc.cluster.local:9000'
   quarkus.http.port: '8080'
   quarkus.openshift.env.secrets: app-credentials
   quarkus.kubernetes-config.secrets.enabled: 'true'
-  minio.bucket-name: my-storage
+  minio.bucket-name: elastic-bucket
   quarkus.websockets-next.server.auto-ping-interval: 1m
   quarkus.openshift.route.tls.termination: edge
   quarkus.langchain4j.openai.chat-model.model-name: granite-7b-instruct
   quarkus.langchain4j.openai.base-url: >-
-    http://granite-7b-instruct-predictor.ic-shared-llm.svc.cluster.local/v1
+    http://granite-7b-ic-shared-llm.apps.rosa.rosa-xfxb9.oipt.p3.openshiftapps.com/v1
 binaryData: {}
