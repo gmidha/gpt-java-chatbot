@@ -154,8 +154,9 @@ jobs:
         minio_user: ${{ secrets.MINIO_ROOT_USER }}
         minio_password: ${{ secrets.MINIO_ROOT_PASSWORD }} 
       run: |
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
+        sleep 10
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/elastic/subs.yaml
         sleep 30
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/ns.yaml
@@ -276,8 +277,9 @@ jobs:
         minio_user: ${{ secrets.MINIO_ROOT_USER }}
         minio_password: ${{ secrets.MINIO_ROOT_PASSWORD }} 
       run: |
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
+        sleep 10
+        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/elastic/subs.yaml
         sleep 30
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/ns.yaml
