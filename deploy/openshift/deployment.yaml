@@ -14,10 +14,12 @@ metadata:
     app.kubernetes.io/managed-by: quarkus
     app.openshift.io/runtime: quarkus
   name: gpt-java-chatbot
+  namespace: elastic-vector
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
+  namespace: elastic-vector
   labels:
     app.kubernetes.io/name: gpt-java-chatbot
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
@@ -33,6 +35,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
+  namespace: elastic-vector
   labels:
     app.kubernetes.io/name: gpt-java-chatbot
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
@@ -49,6 +52,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
+  namespace: elastic-vector
   labels:
     app.kubernetes.io/name: gpt-java-chatbot
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
@@ -64,6 +68,7 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: elastic-vector
   name: gpt-java-chatbot-service
 spec:
   selector:
@@ -77,6 +82,7 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
+  namespace: elastic-vector
   name: gpt-java-chatbot-route
 spec:
   to:
@@ -92,6 +98,7 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   name: gpt-java-chatbot
+  namespace: elastic-vector
   labels:
     app: gpt-java-chatbot
 spec:

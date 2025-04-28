@@ -2,11 +2,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: demo-setup
+  namespace: elastic-vector
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: demo-setup-edit
+  namespace: elastic-vector
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -26,6 +28,7 @@ metadata:
     app.kubernetes.io/part-of: minio
     component: minio
   name: minio
+  namespace: elastic-vector
 spec:
   ports:
   - name: api
@@ -47,6 +50,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: elastic-vector
   labels:
     app: minio
     app.kubernetes.io/component: minio
@@ -65,6 +69,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: elastic-vector
   labels:
     app: minio
     app.kubernetes.io/component: minio
@@ -134,6 +139,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: create-ds-connections
+  namespace: elastic-vector
 spec:
   selector: {}
   template:
@@ -210,6 +216,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
+  namespace: elastic-vector
   labels:
     app.kubernetes.io/component: minio
     app.kubernetes.io/instance: minio
@@ -289,6 +296,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
+  namespace: elastic-vector
   labels:
     app.kubernetes.io/component: minio
     app.kubernetes.io/instance: minio
@@ -347,6 +355,7 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
+  namespace: elastic-vector
   labels:
     app: minio
     app.kubernetes.io/component: minio
@@ -370,6 +379,7 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
+  namespace: elastic-vector
   labels:
     app: minio
     app.kubernetes.io/component: minio

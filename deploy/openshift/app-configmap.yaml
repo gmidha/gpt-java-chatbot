@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   # Choose a meaningful name, e.g., matching your application
   name: my-quarkus-app-prod-config
+  namespace: elastic-vector
 data:
   # assuming namespace for elastic is 'elastic-vector'
   quarkus.elasticsearch.hosts: 'elasticsearch-sample-es-internal-http.elastic-vector.svc.cluster.local:9200'
