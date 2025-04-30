@@ -82,7 +82,7 @@ jobs:
   rosa-ci-cd:
     # 🖊️ Uncomment this if you are using CRDA scan step above
     # needs: crda-scan
-    name: ROSA - Build and deploy to OpenShift
+    name: ROSA - Deploy Chatbot to OpenShift
     runs-on: ubuntu-22.04
     environment: production
 
@@ -149,63 +149,23 @@ jobs:
         namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
         
     
-    - name: Apply yaml files
+    - name: Deploy Chatbot Application
       env:
         minio_user: ${{ secrets.MINIO_ROOT_USER }}
         minio_password: ${{ secrets.MINIO_ROOT_PASSWORD }} 
       run: |
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
-        sleep 10
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/elastic/subs.yaml
-        sleep 30
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/openshift-gitops-og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/openshift-gitops-subs.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/servicemesh/subs.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/subs.yaml
-        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/subs.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/nfd-instance.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/dsc.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/subs.yaml
-        sleep 60
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/cluster-policy.yaml
-        sleep 60
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/accelerator-profile.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/rbac-job-enable-modelcar.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/odhdashboardconfig.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/job-enable-modelcar.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/elastic-v9.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/kibana-v9.yaml
         sleep 300
         ELASTIC_PWD=`oc get secret elasticsearch-sample-es-elastic-user -o jsonpath='{.data}' -n elastic-vector | jq -r .elastic | base64 -d`
-        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/model-deploy/
-        
         oc create secret generic app-credentials --from-literal=quarkus.elasticsearch.password=${ELASTIC_PWD} --from-literal=minio.access-key=${{ env.minio_user }} --from-literal=minio.secret-key=${{ env.minio_password }} --from-literal=quarkus.langchain4j.openai.api-key=YOURKey -n elastic-vector
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/app-configmap.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/deployment.yaml
 
   aro-ci-cd:
     # 🖊️ Uncomment this if you are using CRDA scan step above
-    # needs: crda-scan
-    name: ARO - Build and deploy to OpenShift
+    needs: rosa-ci-cd
+    name: ARO - Deploy Chatbot to OpenShift
     runs-on: ubuntu-22.04
     environment: production
 
@@ -272,54 +232,15 @@ jobs:
         namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
         
     
-    - name: Apply yaml files
+    - name: Deploy Chatbot Application
       env:
         minio_user: ${{ secrets.MINIO_ROOT_USER }}
         minio_password: ${{ secrets.MINIO_ROOT_PASSWORD }} 
       run: |
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/project.yaml
-        sleep 10
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/s3.yaml 
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/elastic/subs.yaml
-        sleep 30
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/openshift-gitops-og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/openshift-gitops/openshift-gitops-subs.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/servicemesh/subs.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/serverless/subs.yaml
-        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/subs.yaml
-        sleep 240
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nfd/nfd-instance.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/rhoai/dsc.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/ns.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/og.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/subs.yaml
-        sleep 60
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/operators/nvidia-gpu/cluster-policy.yaml
-        sleep 60
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/accelerator-profile.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/rbac-job-enable-modelcar.yaml
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/odhdashboardconfig.yaml
-        sleep 20
-        oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/job-enable-modelcar.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/elastic-v9.yaml
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/kibana-v9.yaml
         sleep 300
         ELASTIC_PWD=`oc get secret elasticsearch-sample-es-elastic-user -o jsonpath='{.data}' -n elastic-vector | jq -r .elastic | base64 -d`
-        oc apply -k ${GITHUB_WORKSPACE}/deploy/openshift/model-deploy/
         
         oc create secret generic app-credentials --from-literal=quarkus.elasticsearch.password=${ELASTIC_PWD} --from-literal=minio.access-key=${{ env.minio_user }} --from-literal=minio.secret-key=${{ env.minio_password }} --from-literal=quarkus.langchain4j.openai.api-key=YOURKey -n elastic-vector
         oc apply -f ${GITHUB_WORKSPACE}/deploy/openshift/app-configmap.yaml
